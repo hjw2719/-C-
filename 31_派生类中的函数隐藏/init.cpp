@@ -9,6 +9,10 @@
 
 
 // 函数隐藏
+// 1、作用域不同
+// 2、函数名相同
+// 3、参数列表和调用约定，返回值均不考虑
+
 
 class CPerson {
 public:
@@ -27,20 +31,32 @@ public:
         m_nGender = nGender; 
         std::cout << "CPerson(int nGender, int n)" << std::endl;
     }
+    
+    void test(int n) {
+        std::cout << "===========CPerson::test()=============" << std::endl;
+    }
 
-
-private:
+//private:
+public:
     int m_nGender;
 
 };
 
 class CStudent : public CPerson {
 public:
-    CStudent():CPerson(123, 4), m_nStuId(4), n(123) {
+    CStudent():CPerson(123, 4), m_nStuId(4), n(123), m_nGender(456) {
+        // 直接双冒号继承父类
+        CPerson::m_nGender = 1;
         std::cout << "CStudent initial list" << std::endl;
     }
 
-private:
+void test() {
+        std::cout << "===============CStudent::test()================" << std::endl;
+    }
+
+//private:
+public:
+    int m_nGender;
     int m_nStuId;
     const int n;
 
@@ -48,7 +64,15 @@ private:
 
 int main() {
     CStudent stu;
-
+    // 调用子类的函数
+    //stu.test();
+    // 调用父类的函数
+    //stu.CPerson::test();
+    
+    std::cout << stu.m_nGender << std::endl;
+    // test函数符号直接去子类寻找，如果参数不匹配，则报错 
+    //stu.test(5);
+    stu.test();
 
     return 0;
 }
